@@ -28,6 +28,12 @@ type ParameterType = enum {
     CalledTsap = 0xc2,   # Called transport service access point
 };
 
+# Payload protocol type
+public type PayloadProtocol = enum {
+    Other = 0x01,
+    Session = 0x02,
+};
+
 # Holds contextual information that is maintained throughout parsing a connection/session.
 type Context = struct {
     class: uint8;                        # Transport protocol class (0, 1, 2, etc.)
@@ -36,8 +42,8 @@ type Context = struct {
     calling_tsap: bytes;                 # Value of the calling TSAP parameter
     called_tsap: bytes;                  # Value of the called TSAP parameter
     segments: bytes;                     # Used to temporarily hold segmented user data until EOT
+    upper_layer: PayloadProtocol;        # Holds the payload protocol type
 };
-
 
 # A general representation for parameters which appear in TPDUs after the fixed header.
 type Parameter = unit {
@@ -47,6 +53,8 @@ type Parameter = unit {
 };
 
 type Tpdu = unit(context: Context&) {
+
+    var ctx: Context& = context;
 
     # Holds the reassembled, full payload if user data is segmented.
     var payload: bytes;

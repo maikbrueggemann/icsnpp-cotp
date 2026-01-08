@@ -4,19 +4,69 @@ import cotp;
 import zeek;
 import spicy;
 
+const spdu_types: vector<uint8> = [
+    13,  # Connect
+    14,  # Accept
+    12,  # Refuse
+    9,   # Finish
+    10,  # Disconnect
+    8,   # Not finished
+    25,  # Abort / Activity interrupt
+    26,  # Abort accept / Activity interrupt ac
+    1,   # Data transfer / Give tokens
+    5,   # Expedited
+    33,  # Typed data
+    61,  # Capability data
+    62,  # Capability data ack
+    2,   # Please tokens
+    21,  # Give tokens confirm
+    22,  # Give tokens ack
+    49,  # Minor sync point
+    50,  # Minor sync ack
+    41,  # Major sync point / Activity end
+    42,  # Major sync ack / Activity end ack
+    53,  # Resynchronize
+    34,  # Resynchronize ack
+    7,   # Prepare
+    0,   # Exception report
+    48,  # Exception data
+    45,  # Activity start
+    29,  # Activity resume
+    57,  # Activity Discard
+    58  # Activity discard ack
+];
+
 public function is_sess_available(): bool &cxxname="is_sess_available";
 
-on cotp::Tpdus::%init {
-    if(is_sess_available())
-        zeek::protocol_begin("SESS");
+function is_valid_spdu_type(payload: bytes): bool  {
+    local spdu_type: uint8 = *payload.at(0);
+
+    for (item in spdu_types)
+        if (spdu_type == item)
+            return True;
+    return False;
 }
 
 on cotp::Tpdu::user_data {
-    if(is_sess_available() && |self.payload|>0)
-        zeek::protocol_data_in(zeek::is_orig(), self.payload, spicy::Protocol::UDP);
-}
+    local ctx = self.ctx;
 
-on cotp::Tpdus::%done {
-    if(is_sess_available())
-        zeek::protocol_end();
+    if(|self.payload|==0) {
+        return;
+    }
+
+    # Check if payload matches the ISO 8327 OSI Session Protocol
+    # and not S7Comm or other (industrial) protocols.
+    if(ctx.upper_layer == cotp::PayloadProtocol::Undef) {
+        if(is_valid_spdu_type(self.payload)) {
+            if(is_sess_available())
+                zeek::protocol_begin("SESS");
+            ctx.upper_layer = cotp::PayloadProtocol::Session;
+        }
+        else {
+            ctx.upper_layer = cotp::PayloadProtocol::Other;
+        }
+    }
+
+    if(ctx.upper_layer == cotp::PayloadProtocol::Session && is_sess_available())
+        zeek::protocol_data_in(zeek::is_orig(), self.payload, spicy::Protocol::UDP);
 }
