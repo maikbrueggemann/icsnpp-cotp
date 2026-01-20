@@ -2,15 +2,15 @@
 #
 # @TEST-EXEC: zeek -Cr ${TRACES}/cotp.pcap ${PACKAGE} %INPUT >output1
 # @TEST-EXEC: btest-diff output1
-# @TEST-EXEC: mv cotp.log cotp1.log; btest-diff cotp1.log
+# @TEST-EXEC: mv cotp-conn.log cotp1.log; btest-diff cotp1.log
 #
 # @TEST-EXEC: zeek -Cr ${TRACES}/cotp2.pcapng ${PACKAGE} %INPUT >output2
 # @TEST-EXEC: btest-diff output2
-# @TEST-EXEC: mv cotp.log cotp2.log; btest-diff cotp2.log
+# @TEST-EXEC: mv cotp-conn.log cotp2.log; btest-diff cotp2.log
 #
 # @TEST-EXEC: zeek -Cr ${TRACES}/s7comm_downloading_block_db1.pcap ${PACKAGE} %INPUT >output3
 # @TEST-EXEC: btest-diff output3
-# @TEST-EXEC: mv cotp.log cotp3.log; btest-diff cotp3.log
+# @TEST-EXEC: mv cotp-conn.log cotp3.log; btest-diff cotp3.log
 
 event zeek_init() &priority=5 {
     # the script of tpkt is not loaded even if the tpkt plugin is installed
