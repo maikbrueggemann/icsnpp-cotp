@@ -7,17 +7,17 @@ export {
         ts:           time    &log;
         uid:          string  &log;
         id:           conn_id &log;
-        bytes_orig:   count &log;
-        bytes_resp:   count &log;
-        packets_orig: count &log;
-        packets_resp: count &log;
-        calling_tsap: string  &log;
-        called_tsap:  string  &log;
-        class:        count   &log;
-        has_connect:  bool    &log;
-        has_disconnect: bool    &log;
-        error:        bool    &log;
-        reject_cause: count   &log;
+        bytes_orig:   count &log &default=0;
+        bytes_resp:   count &log &default=0;
+        packets_orig: count &log &default=0;
+        packets_resp: count &log &default=0;
+        calling_tsap: string  &log &optional;
+        called_tsap:  string  &log &optional;
+        class:        count   &log &default=0;
+        has_connect:  bool    &log &default=F;
+        has_disconnect: bool    &log &default=F;
+        error:        bool    &log &default=F;
+        reject_cause: count   &log &default=0;
     };
 
     global log_cotp: event(rec: Info);
@@ -37,17 +37,6 @@ function get_info(c: connection): Info {
             $ts=network_time(),
             $uid=c$uid,
             $id=c$id,
-            $bytes_orig=0,
-            $bytes_resp=0,
-            $packets_orig=0,
-            $packets_resp=0,
-            $calling_tsap="",
-            $called_tsap="",
-            $class=0,
-            $has_connect=F,
-            $has_disconnect=F,
-            $error=F,
-            $reject_cause=0,
         ];
     }
     return c$cotp_info;
@@ -59,8 +48,8 @@ event connection_request(c: connection, is_orig: bool, calling: string, called: 
 
     info$has_connect = T;
     info$class = class;
-    if ( info$calling_tsap == "" ) info$calling_tsap = calling;
-    if ( info$called_tsap == "" ) info$called_tsap = called;
+    if (!info?$calling_tsap) info$calling_tsap = calling;
+    if (!info?$called_tsap) info$called_tsap = called;
 
 }
 
@@ -69,8 +58,8 @@ event connection_confirm(c: connection, is_orig: bool, calling: string, called: 
 
     info$class = class;
     info$has_connect = T;
-    if ( info$calling_tsap == "" ) info$calling_tsap = calling;
-    if ( info$called_tsap == "" ) info$called_tsap = called;
+    if (!info?$calling_tsap) info$calling_tsap = calling;
+    if (!info?$called_tsap) info$called_tsap = called;
 }
 
 event disconnect_request(c: connection, is_orig: bool, calling: string, called: string, class: count) {
