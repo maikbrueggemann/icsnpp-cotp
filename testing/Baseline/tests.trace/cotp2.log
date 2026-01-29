@@ -3,7 +3,7 @@
 #set_separator	,
 #empty_field	(empty)
 #unset_field	-
-#path	cotp-conn
+#path	cotp_conn
 #open XXXX-XX-XX-XX-XX-XX
 #fields	ts	uid	id.orig_h	id.orig_p	id.resp_h	id.resp_p	bytes_orig	bytes_resp	packets_orig	packets_resp	calling_tsap	called_tsap	class	has_connect	has_disconnect	error	reject_cause
 #types	time	string	addr	port	addr	port	count	count	count	count	string	string	count	bool	bool	bool	count

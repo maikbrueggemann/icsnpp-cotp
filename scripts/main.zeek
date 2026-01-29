@@ -28,7 +28,7 @@ redef record connection += {
 };
 
 event zeek_init() &priority=5 {
-    Log::create_stream(cotp::LOG, [$columns = Info, $ev = log_cotp, $path="cotp-conn"]);
+    Log::create_stream(cotp::LOG, [$columns = Info, $ev = log_cotp, $path="cotp_conn"]);
 }
 
 function get_info(c: connection): Info {
