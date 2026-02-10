@@ -48,7 +48,6 @@ function is_valid_spdu_type(payload: bytes): bool  {
 }
 
 on cotp::Tpdu::user_data {
-    local ctx = self.ctx;
 
     if(|self.payload|==0) {
         return;
@@ -56,17 +55,17 @@ on cotp::Tpdu::user_data {
 
     # Check if payload matches the ISO 8327 OSI Session Protocol
     # and not S7Comm or other (industrial) protocols.
-    if(ctx.upper_layer == cotp::PayloadProtocol::Undef) {
+    if(self.ctx.upper_layer == cotp::PayloadProtocol::Undef) {
         if(is_valid_spdu_type(self.payload)) {
             if(is_sess_available())
                 zeek::protocol_begin("SESS");
-            ctx.upper_layer = cotp::PayloadProtocol::Session;
+            self.ctx.upper_layer = cotp::PayloadProtocol::Session;
         }
         else {
-            ctx.upper_layer = cotp::PayloadProtocol::Other;
+            self.ctx.upper_layer = cotp::PayloadProtocol::Other;
         }
     }
 
-    if(ctx.upper_layer == cotp::PayloadProtocol::Session && is_sess_available())
+    if(self.ctx.upper_layer == cotp::PayloadProtocol::Session && is_sess_available())
         zeek::protocol_data_in(zeek::is_orig(), self.payload, spicy::Protocol::UDP);
 }
