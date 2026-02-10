@@ -3,7 +3,7 @@ cotp::Tpdus {
   pdus: [
     cotp::Tpdu {
       ctx: cotp::Context {
-        class_: 0
+        class: 0
         extended_formats: False
         no_explicit_flow_control: False
         calling_tsap: \x00\x01
