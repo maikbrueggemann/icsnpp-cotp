@@ -3,9 +3,9 @@
 #set_separator	,
 #empty_field	(empty)
 #unset_field	-
-#path	cotp
+#path	cotp_conn
 #open XXXX-XX-XX-XX-XX-XX
-#fields	ts_start	ts_end	uid	id.orig_h	id.orig_p	id.resp_h	id.resp_p	calling_tsap	called_tsap	class	has_connect	has_disconnect	data_pkts	data_bytes	error	reject_cause
-#types	time	time	string	addr	port	addr	port	string	string	count	bool	bool	count	count	bool	count
-XXXXXXXXXX.XXXXXX	XXXXXXXXXX.XXXXXX	CHhAvVGS1DHFjwGM9	127.0.0.1	58019	127.0.0.1	102	\x00\x01	\x00\x01	0	T	F	2110	106884	F	0
+#fields	ts	uid	id.orig_h	id.orig_p	id.resp_h	id.resp_p	bytes_orig	bytes_resp	packets_orig	packets_resp	calling_tsap	called_tsap	class	has_connect	has_disconnect	error	reject_cause
+#types	time	string	addr	port	addr	port	count	count	count	count	string	string	count	bool	bool	bool	count
+XXXXXXXXXX.XXXXXX	CHhAvVGS1DHFjwGM9	127.0.0.1	58019	127.0.0.1	102	49371	57513	1055	1060	\x00\x01	\x00\x01	0	T	F	F	0
 #close XXXX-XX-XX-XX-XX-XX

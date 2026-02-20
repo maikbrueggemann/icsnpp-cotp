@@ -2,6 +2,15 @@
 cotp::Tpdus {
   pdus: [
     cotp::Tpdu {
+      ctx: cotp::Context {
+        class: 0
+        extended_formats: False
+        no_explicit_flow_control: False
+        calling_tsap: \x00\x01
+        called_tsap: \x00\x01
+        segments: 
+        upper_layer: Undef
+      }
       payload: 
       tpdu_no: 0
       eot: False
