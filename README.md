@@ -57,4 +57,4 @@ Payload extraction is only supported for class 0. Higher layers are therefore on
 
 The software was developed on behalf of the BSI (Federal Office for Information Security)
 
-Copyright (c) 2025 by DINA-Community BSD 3-Clause. [See License](/COPYING)
+Copyright (c) 2025-2026 by DINA-Community BSD 3-Clause. [See License](/COPYING)
