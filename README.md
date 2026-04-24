@@ -18,8 +18,7 @@ In addition, zeek must support spicy.
 This script is available as a package for [Zeek Package Manager](https://docs.zeek.org/projects/package-manager/en/stable/index.html).
 
 ```bash
-zkg refresh
-zkg install cotp
+zkg install https://github.com/DINA-community/icsnpp-cotp
 ```
 
 If this package is installed from ZKG, it will be added to the available plugins. This can be tested by running `zeek -NN`. If installed correctly, users will see `ANALYZER_COTP` under the list of plugins.
