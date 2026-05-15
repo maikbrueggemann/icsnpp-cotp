@@ -108,7 +108,7 @@ type Tpdu = unit(context: Context&) {
                     yr_tu_no_ext: uint32 {self.segment_no=$$;}
                     cdt: uint16;
                 }
-                False -> yr_tu_no: uint16 {self.segment_no=$$;}
+                False -> yr_tu_no: uint16 { self.segment_no = cast<uint32>($$ + 0); }
             };
         }
         TpduType::Error -> {
